@@ -59,3 +59,7 @@ button:focus{
 #add{
     grid-row: span 2;
 }
+
+.operator-active{
+    background-color: darkblue;
+}
