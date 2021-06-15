@@ -1,4 +1,22 @@
+const display = document.querySelector(".screen");
+const keypad = document.querySelector(".buttons");
+let num = 0;
 
+// Getting the input value
+keypad.addEventListener("click", e => {
+    let buttonPressed = e.target.className;
+    if(buttonPressed === "digit"){
+        num = e.target.textContent;
+        display.textContent = num;
+    }
+    else if (buttonPressed === "clear"){
+        num = 0;
+        display.textContent = num;
+    }
+    else{
+        display.textContent = "None";
+    }
+});
 
 // Operations
 const add = (num1,num2) => {
