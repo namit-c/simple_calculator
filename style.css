@@ -1,8 +1,9 @@
 html{
     /* margin: auto; */
     height: 100%;
-    background: rgb(29, 29, 29);
+    background-color: #282828;
     margin: auto;
+    font-family: 'Trebuchet MS', 'Helvatica';
 }
 
 body{
@@ -12,44 +13,62 @@ body{
 }
 
 .calculator {
-    background-color: rgb(233, 67, 67);
-    max-width: 400px;
-    border-radius: 10px;
+    background-color: #5925f5;
+    max-width: 350px;
+    /* border-radius: 10px; */
+    box-shadow: 5px 5px 0px rgba(255, 255, 255, 0.557);
     padding: 20px;
     margin: auto;
 }
 
 .screen{
-    background-color: rgb(255, 255, 255);
-    border-radius: 8px;
+    font-size: 50px;
+    background-color: #e8e8e8;
+    border-radius: 15px;
     margin: 0 auto 20px 0;
-    padding: 20px;
-    color: rgb(255, 0, 0);
+    padding: 15px 10px;
+    color: #0C0032;
     text-align: right;
 }
 
 .buttons{
     display: grid;
-    grid-template-columns: repeat(4, auto);
+    grid-template-columns: repeat(4, 1fr);
     grid-gap: 10px;
     /* height: 100%; */
 }
 
 button{
-    padding: 8px;
-    background-color: white;
+    padding: 15px;
+    background-color: #e8e8e8;
+    color: #0C0032;
     border: 1px solid transparent;
-    border-radius: 3px;
-    /* margin-left: 40px; */
+    border-radius: 40px;
+    font-size: 20px;
+    box-shadow: 2px 2px 7px #190061;
 }
 
 button:hover{
-    background-color: #004758;
-    color: white;
+    background-color: #240090;
+    color: #e8e8e8;
 }
 
 button:focus{
     outline: none;
+}
+
+.operator:hover{
+    background-color: #f0e800;
+    color: #0C0032;
+}
+
+.operator-active{
+    background-color: darkblue;
+}
+
+.equals:hover{
+    background-color: #00ff26;
+    color: #0C0032;
 }
 
 .clear{
@@ -58,8 +77,4 @@ button:focus{
 
 #add{
     grid-row: span 2;
-}
-
-.operator-active{
-    background-color: darkblue;
 }
