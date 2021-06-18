@@ -15,7 +15,7 @@ body{
 .calculator {
     background-color: #5925f5;
     max-width: 350px;
-    /* border-radius: 10px; */
+    border: 1px solid white;
     box-shadow: 5px 5px 0px rgba(255, 255, 255, 0.557);
     padding: 20px;
     margin: auto;
@@ -29,6 +29,7 @@ body{
     padding: 15px 10px;
     color: #0C0032;
     text-align: right;
+    border: 1px solid white;
 }
 
 .buttons{
@@ -42,7 +43,7 @@ button{
     padding: 15px;
     background-color: #e8e8e8;
     color: #0C0032;
-    border: 1px solid transparent;
+    border: 1px solid white;
     border-radius: 40px;
     font-size: 20px;
     box-shadow: 2px 2px 7px #190061;
@@ -57,8 +58,13 @@ button:focus{
     outline: none;
 }
 
+.clear:hover{
+    background-color: #F4002D;
+    color: #0C0032;
+}
+
 .operator:hover{
-    background-color: #f0e800;
+    background-color: #fff700;
     color: #0C0032;
 }
 
