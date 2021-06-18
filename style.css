@@ -7,14 +7,14 @@ html{
 }
 
 body{
-    margin: 5% auto auto auto;
+    margin: 100px auto auto auto;
     /* text-align: center; */
     /* max-width: fit-content; */
 }
 
 .calculator {
     background-color: #5925f5;
-    max-width: 350px;
+    max-width: 300px;
     border: 1px solid white;
     box-shadow: 5px 5px 0px rgba(255, 255, 255, 0.557);
     padding: 20px;
