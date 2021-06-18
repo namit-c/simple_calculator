@@ -58,7 +58,7 @@ button:focus{
     outline: none;
 }
 
-.clear:hover{
+.clear:hover, .all-clear:hover{
     background-color: #F4002D;
     color: #0C0032;
 }
@@ -75,10 +75,6 @@ button:focus{
 .equals:hover{
     background-color: #00ff26;
     color: #0C0032;
-}
-
-.clear{
-    grid-column: span 2;
 }
 
 #add{
