@@ -9,6 +9,7 @@ let memory = 0;
 const add = (num1,num2) => {
     num2 = num2 || 0;   // making sure num2 is always a number
     num1 = num1 || 0;
+    console.log(num1)
     return num1+num2;
 }
 
@@ -38,7 +39,6 @@ const negate = (num) => {
 
 // Function that control which operation to call
 const operate = (num1, num2, operation) => {
-    console.log(num1, num2, operation);
     let ans;
     switch(operation){
         case '+':
@@ -75,7 +75,6 @@ const compute = (expression, num, memory) => {
 // function; as of now, only way to show to results is to click the equals btn
 keypad.addEventListener("click", e => {
     let buttonPressed = e.target;
-
     //checking which button is pressed and performing corresponding steps
     if(buttonPressed.className === "digit"){
         // checks if the decimal button is pressed and the number
@@ -94,6 +93,7 @@ keypad.addEventListener("click", e => {
         num = [];
         expression = []
         memory = 0;
+        console.log(memory)
         display.textContent = 0;
     }
     else if(buttonPressed.className === "clear"){
@@ -108,6 +108,7 @@ keypad.addEventListener("click", e => {
         if(num.length < 1){
             expression.push(memory);
             display.textContent = memory;
+            console.log(num.length, memory)
         }
         else{
             expression.push(num.join(""));
@@ -115,7 +116,6 @@ keypad.addEventListener("click", e => {
         // getting the operator clicked
         expression.push(buttonPressed.textContent);
         num = [];
-        console.log(expression)
     }
     else if(buttonPressed.className === "equals"){
         expression.push(num.join(""));  // adding the second input number
@@ -126,5 +126,4 @@ keypad.addEventListener("click", e => {
         //storing only the previous answer if needed for the next calculation
         memory = answer; 
     }
-    // console.log(expression);
 });
