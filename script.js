@@ -9,7 +9,7 @@ let memory = 0;
 const add = (num1,num2) => {
     num2 = num2 || 0;   // making sure num2 is always a number
     num1 = num1 || 0;
-    console.log(num1)
+    //console.log(num1)
     return num1+num2;
 }
 
@@ -66,6 +66,7 @@ const operate = (num1, num2, operation) => {
 const compute = (expression, num, memory) => {
     let answer = operate(parseFloat(expression[0]), 
                     parseFloat(expression[2]), expression[1]);
+    console.log(expression);
     display.textContent = answer || 0;  // to ensure there is always a number on the screen
     return answer;
 };
@@ -93,7 +94,7 @@ keypad.addEventListener("click", e => {
         num = [];
         expression = []
         memory = 0;
-        console.log(memory)
+        //console.log(memory)
         display.textContent = 0;
     }
     else if(buttonPressed.className === "clear"){
@@ -103,15 +104,16 @@ keypad.addEventListener("click", e => {
         // makes sure there is 0 on the screen when num is empty
         display.textContent = num.length != 0 ? num.join("") : 0;
     }
-    else if(buttonPressed.className.includes("operator")){
-        // moving number from input to memory
-        if(num.length < 1){
-            expression.push(memory);
-            display.textContent = memory;
-            console.log(num.length, memory)
-        }
-        else{
-            expression.push(num.join(""));
+    else if(buttonPressed.className === "operator"){
+        console.log(expression.length > 2, expression.length, expression, num);
+        // adding the current input into the expression
+        expression.push(num.length < 1 ? memory : num.join(""));
+        
+        // to ensure the several operations can be used without pressing "="
+        if(expression.length > 2){
+            answer = compute(expression, num, memory);
+            expression = [answer];
+            memory = answer;
         }
         // getting the operator clicked
         expression.push(buttonPressed.textContent);
@@ -126,4 +128,5 @@ keypad.addEventListener("click", e => {
         //storing only the previous answer if needed for the next calculation
         memory = answer; 
     }
+    console.log(expression, num)
 });
