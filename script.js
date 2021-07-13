@@ -122,16 +122,17 @@ keypad.addEventListener("click", e => {
         // getting the operator clicked
         expression.push(buttonPressed.textContent);
         num = [];
-        console.log(expression, num, memory);
     }
     else if(buttonPressed.className === "equals"){
-        expression.push(num.join(""));  // adding the second input number
-        answer = compute(expression);
-        // clearing the current expression and numbers
-        num = [];
-        expression = []
-        //storing only the previous answer if needed for the next calculation
-        memory = answer; 
+        if(expression.length > 1){
+            expression.push(num.join(""));  // adding the second input number
+            answer = compute(expression);
+            // clearing the current expression and numbers
+            num = [];
+            expression = []
+            //storing only the previous answer if needed for the next calculation
+            memory = answer; 
+        }
     }
     //console.log(expression, num)
 });
