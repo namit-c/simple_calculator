@@ -63,10 +63,9 @@ const operate = (num1, num2, operation) => {
 
 // Function that takes the 2 input values and operation and computes the result
 // to display on the screen
-const compute = (expression, num, memory) => {
+const compute = (expression) => {
     let answer = operate(parseFloat(expression[0]), 
                     parseFloat(expression[2]), expression[1]);
-    console.log(expression);
     display.textContent = answer || 0;  // to ensure there is always a number on the screen
     return answer;
 };
@@ -104,29 +103,35 @@ keypad.addEventListener("click", e => {
         // makes sure there is 0 on the screen when num is empty
         display.textContent = num.length != 0 ? num.join("") : 0;
     }
-    else if(buttonPressed.className === "operator"){
-        console.log(expression.length > 2, expression.length, expression, num);
+    else if(buttonPressed.className === "operator"){        
         // adding the current input into the expression
         expression.push(num.length < 1 ? memory : num.join(""));
         
+        // multiple clicks of the operations button; 
+        // checks the last element in the expression and replaces with the new one
+        if (["+", "-", "x", "÷"].includes(expression[expression.length - 1])){
+            expression.pop(); // remove the operator at the end of the array; new added later
+        }
+
         // to ensure the several operations can be used without pressing "="
         if(expression.length > 2){
-            answer = compute(expression, num, memory);
+            answer = compute(expression);
             expression = [answer];
-            memory = answer;
+            memory = 0;
         }
         // getting the operator clicked
         expression.push(buttonPressed.textContent);
         num = [];
+        console.log(expression, num, memory);
     }
     else if(buttonPressed.className === "equals"){
         expression.push(num.join(""));  // adding the second input number
-        answer = compute(expression, num, memory);
+        answer = compute(expression);
         // clearing the current expression and numbers
         num = [];
         expression = []
         //storing only the previous answer if needed for the next calculation
         memory = answer; 
     }
-    console.log(expression, num)
+    //console.log(expression, num)
 });
