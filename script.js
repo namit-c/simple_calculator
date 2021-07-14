@@ -103,25 +103,36 @@ keypad.addEventListener("click", e => {
         // makes sure there is 0 on the screen when num is empty
         display.textContent = num.length != 0 ? num.join("") : 0;
     }
-    else if(buttonPressed.className === "operator"){        
-        // adding the current input into the expression
-        expression.push(num.length < 1 ? memory : num.join(""));
-        
-        // multiple clicks of the operations button; 
-        // checks the last element in the expression and replaces with the new one
-        if (["+", "-", "x", "÷"].includes(expression[expression.length - 1])){
-            expression.pop(); // remove the operator at the end of the array; new added later
-        }
+    else if(buttonPressed.className.includes("operator")){
 
-        // to ensure the several operations can be used without pressing "="
-        if(expression.length > 2){
-            answer = compute(expression);
-            expression = [answer];
-            memory = 0;
+        // checking if the sign change button is pressed
+        if(buttonPressed.className.includes("sign-change")){
+            // joins the array into a string, which is then converted into
+            // into a number so it can be converted to either positive or negative;
+            // changed back into string array after conversion
+            num = (-1*parseFloat(num.join(""))).toString().split("");
+            display.textContent = num.join("")
         }
-        // getting the operator clicked
-        expression.push(buttonPressed.textContent);
-        num = [];
+        else{
+            // adding the current input into the expression
+            expression.push(num.length < 1 ? memory : num.join(""));
+            
+            // multiple clicks of the operations button; 
+            // checks the last element in the expression and replaces with the new one
+            if (["+", "-", "x", "÷"].includes(expression[expression.length - 1])){
+                expression.pop(); // remove the operator at the end of the array; new added later
+            }
+
+            // to ensure the several operations can be used without pressing "="
+            if(expression.length > 2){
+                answer = compute(expression);
+                expression = [answer];
+                memory = 0;
+            }
+            // getting the operator clicked
+            expression.push(buttonPressed.textContent);
+            num = [];
+        }
     }
     else if(buttonPressed.className === "equals"){
         if(expression.length > 1){
