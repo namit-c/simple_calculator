@@ -53,9 +53,6 @@ const operate = (num1, num2, operation) => {
         case '÷':
             ans = divide(num1, num2);
             break;
-        case '+/-':
-            ans = negate(num1);
-            break;
     }
     return ans; 
 }
@@ -77,18 +74,18 @@ keypad.addEventListener("click", e => {
     let buttonPressed = e.target;
     //checking which button is pressed and performing corresponding steps
     if(buttonPressed.className === "digit"){
-        console.log(num.length, num[0])
+
         // only allow another digit to be added if it fits on the screen
         // max space is 10 without the negative sign and 11 with
-        if(num.length < 10 || (num.length < 11 && num[0] === "-")){
-
+        if(num.length < 10 || (num.length < 11 && num[0] == "-")){
+            
             // checks if the decimal button is pressed and the number
             // does not already contain a decimal point
-            if(buttonPressed.id === "decimal" && !num.includes(".")){
-                num.push(".");
+            if(buttonPressed.textContent != "."){
+                num.push(buttonPressed.textContent);
                 display.textContent = num.join("");
             }
-            else{
+            else if(!num.includes('.')){
                 num.push(buttonPressed.textContent);
                 display.textContent = num.join("");
             }
