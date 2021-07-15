@@ -123,45 +123,49 @@ keypad.addEventListener("click", e => {
     else if(buttonPressed.className === "clear"){
         // removing the last element from the num arary
         num.pop();
-        console.log(num)
         // makes sure there is 0 on the screen when num is empty
         display.textContent = num.length != 0 ? num.join("") : 0;
     }
     else if(buttonPressed.className.includes("operator")){
-
-        // checking if the sign change button is pressed
-        if(buttonPressed.className.includes("sign-change")){
-            // to ensure it is pressed fore the operator is pressed
-            if(num.length === 0){
-                alert("Invalid Operation. Use before operator.")
-            }
-            else{
-                // joins the array into a string, which is then converted into
-                // into a number so it can be converted to either positive or negative;
-                // changed back into string array after conversion
-                num = (-1*parseFloat(num.join(""))).toString().split("");
-                display.textContent = num.join("");
-            }
+        // can't operate on any numbers that in exponential form (too large)
+        if((num.length < 1 ? memory : num.join("")).includes("e")){
+            alert("Number too large! Can't Operate.");
         }
         else{
-            // adding the current input into the expression
-            expression.push(num.length < 1 ? memory : num.join(""));
-            
-            // multiple clicks of the operations button; 
-            // checks the last element in the expression and replaces with the new one
-            if (["+", "-", "x", "÷"].includes(expression[expression.length - 1])){
-                expression.pop(); // remove the operator at the end of the array; new added later
+            // checking if the sign change button is pressed
+            if(buttonPressed.className.includes("sign-change")){
+                // to ensure it is pressed fore the operator is pressed
+                if(num.length === 0){
+                    alert("Invalid Operation. Use before operator.")
+                }
+                else{
+                    // joins the array into a string, which is then converted into
+                    // into a number so it can be converted to either positive or negative;
+                    // changed back into string array after conversion
+                    num = (-1*parseFloat(num.join(""))).toString().split("");
+                    display.textContent = num.join("");
+                }
             }
+            else{
+                // adding the current input into the expression
+                expression.push(num.length < 1 ? memory : num.join(""));
+                
+                // multiple clicks of the operations button; 
+                // checks the last element in the expression and replaces with the new one
+                if (["+", "-", "x", "÷"].includes(expression[expression.length - 1])){
+                    expression.pop(); // remove the operator at the end of the array; new added later
+                }
 
-            // to ensure the several operations can be used without pressing "="
-            if(expression.length > 2){
-                answer = compute(expression);
-                expression = [answer];
-                memory = 0;
+                // to ensure the several operations can be used without pressing "="
+                if(expression.length > 2){
+                    answer = compute(expression);
+                    expression = [answer];
+                    memory = 0;
+                }
+                // getting the operator clicked
+                expression.push(buttonPressed.textContent);
+                num = [];
             }
-            // getting the operator clicked
-            expression.push(buttonPressed.textContent);
-            num = [];
         }
     }
     else if(buttonPressed.className === "equals"){
@@ -186,32 +190,38 @@ document.addEventListener("keydown", e => {
         case "-":
         case "*":
         case "/":
-            // adding the current input into the expression
-            expression.push(num.length < 1 ? memory : num.join(""));
-            
-            // multiple clicks of the operations button; 
-            // checks the last element in the expression and replaces with the new one
-            if (["+", "-", "x", "÷"].includes(expression[expression.length - 1])){
-                expression.pop(); // remove the operator at the end of the array; new added later
-            }
-
-            // to ensure the several operations can be used without pressing "="
-            if(expression.length > 2){
-                answer = compute(expression);
-                expression = [answer];
-                memory = 0;
-            }
-            // getting the operator clicked
-            if (e.key !== "*" && e.key !== "/"){
-                expression.push(e.key);
-            }
-            else if (e.key === "*"){
-                expression.push("x");
+            // can't operate on any numbers that in exponential form (too large)
+            if((num.length < 1 ? memory : num.join("")).includes("e")){
+                alert("Number too large! Can't Operate.");
             }
             else{
-                expression.push("÷");
+                // adding the current input into the expression
+                expression.push(num.length < 1 ? memory : num.join(""));
+                
+                // multiple clicks of the operations button; 
+                // checks the last element in the expression and replaces with the new one
+                if (["+", "-", "x", "÷"].includes(expression[expression.length - 1])){
+                    expression.pop(); // remove the operator at the end of the array; new added later
+                }
+
+                // to ensure the several operations can be used without pressing "="
+                if(expression.length > 2){
+                    answer = compute(expression);
+                    expression = [answer];
+                    memory = 0;
+                }
+                // getting the operator clicked
+                if (e.key !== "*" && e.key !== "/"){
+                    expression.push(e.key);
+                }
+                else if (e.key === "*"){
+                    expression.push("x");
+                }
+                else{
+                    expression.push("÷");
+                }
+                num = [];
             }
-            num = [];
             break;
         
         // "C" on the keypad
@@ -234,17 +244,24 @@ document.addEventListener("keydown", e => {
 
         // for negation
         case "n":
-            // to ensure it is pressed fore the operator is pressed
-            if(num.length === 0){
-                alert("Invalid Operation. Use before operator.")
+            // can't operate on any numbers that in exponential form (too large)
+            if((num.length < 1 ? memory : num.join("")).includes("e")){
+                alert("Number too large! Can't Operate.");
             }
             else{
-                // joins the array into a string, which is then converted into
-                // into a number so it can be converted to either positive or negative;
-                // changed back into string array after conversion
-                num = (-1*parseFloat(num.join(""))).toString().split("");
-                display.textContent = num.join("");
+                // to ensure it is pressed fore the operator is pressed
+                if(num.length === 0){
+                    alert("Invalid Operation. Use before operator.")
+                }
+                else{
+                    // joins the array into a string, which is then converted into
+                    // into a number so it can be converted to either positive or negative;
+                    // changed back into string array after conversion
+                    num = (-1*parseFloat(num.join(""))).toString().split("");
+                    display.textContent = num.join("");
+                }
             }
+            break;
 
         case "Enter":
             if(expression.length > 1){
@@ -269,7 +286,6 @@ document.addEventListener("keydown", e => {
                     display.textContent = num.join("");
                 }
                 else if(!num.includes('.') && e.key === "."){
-                    console.log(e.key)
                     num.push(e.key);
                     display.textContent = num.join("");
                 }
