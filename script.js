@@ -27,9 +27,13 @@ const multiply = (num1,num2) => {
 }
 
 const divide = (num1,num2 = 1) => {
-    num2 = num2 || 1;   // setting default value of num2 as 1
-    num1 = num1 || 0;
-    return Math.round(100*(num1/num2))/100;  // to the nearest hundredth
+    // num2 = num2;
+    // num1 = num1;
+    if(num2 === 0){
+        alert("Oops! Invalid Operation. Try Again!")
+        return 0;
+    }
+    return num1/num2;  // to the nearest hundredth
 }
 
 const negate = (num) => {
@@ -52,9 +56,7 @@ const operate = (num1, num2, operation) => {
             ans = multiply(num1, num2);
             break;
         case '÷':
-            if(num2 !== 0){
-                ans = divide(num1, num2);
-            }
+            ans = divide(num1, num2);
             break;
     }
     return ans; 
@@ -66,12 +68,20 @@ const operate = (num1, num2, operation) => {
 const compute = (expression) => {
     let answer = operate(parseFloat(expression[0]), 
                     parseFloat(expression[2]), expression[1]);
+
     // limiting the digits of the answer to 10 or 11 (with negative sign)
     if(answer < 0 && answer.toString().length > 11){
         answer = answer.toExponential(6);
     }
     else if(answer > 0 && answer.toString().length > 10){
-        answer = answer.toExponential(5);
+        // checking if exponential form is required or the number is improper
+        // 999999999 is the largest number that can fit on the screen without exponene form
+        if(!(answer > 9999999999)){
+            answer = parseFloat(answer.toString().split("").splice(0,10).join(""));
+        }
+        else{
+            answer = answer.toExponential(5);
+        }
     }
     display.textContent = answer || 0;  // to ensure there is always a number on the screen
     return answer;
