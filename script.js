@@ -1,5 +1,6 @@
 const display = document.querySelector(".screen");
 const keypad = document.querySelector(".buttons");
+
 // created the num as an array to make it easier to add and remove numbers
 let num = [];
 let expression = [];
@@ -51,7 +52,9 @@ const operate = (num1, num2, operation) => {
             ans = multiply(num1, num2);
             break;
         case '÷':
-            ans = divide(num1, num2);
+            if(num2 !== 0){
+                ans = divide(num1, num2);
+            }
             break;
     }
     return ans; 
@@ -63,6 +66,13 @@ const operate = (num1, num2, operation) => {
 const compute = (expression) => {
     let answer = operate(parseFloat(expression[0]), 
                     parseFloat(expression[2]), expression[1]);
+    // limiting the digits of the answer to 10 or 11 (with negative sign)
+    if(answer < 0 && answer.toString().length > 11){
+        answer = answer.toExponential(6);
+    }
+    else if(answer > 0 && answer.toString().length > 10){
+        answer = answer.toExponential(5);
+    }
     display.textContent = answer || 0;  // to ensure there is always a number on the screen
     return answer;
 };
@@ -72,7 +82,8 @@ const compute = (expression) => {
 // function; as of now, only way to show to results is to click the equals btn
 keypad.addEventListener("click", e => {
     let buttonPressed = e.target;
-    //checking which button is pressed and performing corresponding steps
+
+    // checking which button is pressed and performing corresponding steps
     if(buttonPressed.className === "digit"){
 
         // only allow another digit to be added if it fits on the screen
@@ -110,11 +121,17 @@ keypad.addEventListener("click", e => {
 
         // checking if the sign change button is pressed
         if(buttonPressed.className.includes("sign-change")){
-            // joins the array into a string, which is then converted into
-            // into a number so it can be converted to either positive or negative;
-            // changed back into string array after conversion
-            num = (-1*parseFloat(num.join(""))).toString().split("");
-            display.textContent = num.join("")
+            // to ensure it is pressed fore the operator is pressed
+            if(num.length === 0){
+                alert("Invalid Operation. Use before operator.")
+            }
+            else{
+                // joins the array into a string, which is then converted into
+                // into a number so it can be converted to either positive or negative;
+                // changed back into string array after conversion
+                num = (-1*parseFloat(num.join(""))).toString().split("");
+                display.textContent = num.join("");
+            }
         }
         else{
             // adding the current input into the expression
@@ -142,7 +159,7 @@ keypad.addEventListener("click", e => {
             expression.push(num.join(""));  // adding the second input number
             answer = compute(expression);
             // clearing the current expression and numbers
-            num = [];
+            num = [answer];
             expression = []
             //storing only the previous answer if needed for the next calculation
             memory = answer; 
@@ -150,3 +167,103 @@ keypad.addEventListener("click", e => {
     }
     //console.log(expression, num)
 });
+
+// Keyboard Support
+document.addEventListener("keydown", e => {
+    // using switch statement for the keyboard input
+    switch(e.key){
+        case "+":
+        case "-":
+        case "*":
+        case "/":
+            // adding the current input into the expression
+            expression.push(num.length < 1 ? memory : num.join(""));
+            
+            // multiple clicks of the operations button; 
+            // checks the last element in the expression and replaces with the new one
+            if (["+", "-", "x", "÷"].includes(expression[expression.length - 1])){
+                expression.pop(); // remove the operator at the end of the array; new added later
+            }
+
+            // to ensure the several operations can be used without pressing "="
+            if(expression.length > 2){
+                answer = compute(expression);
+                expression = [answer];
+                memory = 0;
+            }
+            // getting the operator clicked
+            if (e.key !== "*" && e.key !== "/"){
+                expression.push(e.key);
+            }
+            else if (e.key === "*"){
+                expression.push("x");
+            }
+            else{
+                expression.push("÷");
+            }
+            num = [];
+            break;
+        
+        // "C" on the keypad
+        case "Backspace":
+            // removing the last element from the num arary
+            num.pop();
+            // makes sure there is 0 on the screen when num is empty
+            display.textContent = num.length != 0 ? num.join("") : 0;
+            break;
+        
+        // "AC" on the keypad; All-clear
+        case "Escape":
+            // resetting the calculator values
+            num = [];
+            expression = []
+            memory = 0;
+            //console.log(memory)
+            display.textContent = 0;
+            break;
+
+        // for negation
+        case "n":
+            // to ensure it is pressed fore the operator is pressed
+            if(num.length === 0){
+                alert("Invalid Operation. Use before operator.")
+            }
+            else{
+                // joins the array into a string, which is then converted into
+                // into a number so it can be converted to either positive or negative;
+                // changed back into string array after conversion
+                num = (-1*parseFloat(num.join(""))).toString().split("");
+                display.textContent = num.join("");
+            }
+
+        case "Enter":
+            if(expression.length > 1){
+                expression.push(num.join(""));  // adding the second input number
+                answer = compute(expression);
+                // clearing the current expression and numbers
+                num = answer.toString().split("");
+                expression = []
+                //storing only the previous answer if needed for the next calculation
+                memory = answer; 
+            }
+            break;
+        
+        default:
+            // only allow another digit to be added if it fits on the screen
+            // max space is 10 without the negative sign and 11 with
+            if(num.length < 10 || (num.length < 11 && num[0] == "-")){
+                // checks if the decimal button is pressed and the number
+                // does not already contain a decimal point
+                if(e.key !== "." && isFinite(e.key)){
+                    num.push(e.key);
+                    display.textContent = num.join("");
+                }
+                else if(!num.includes('.') && e.key === "."){
+                    console.log(e.key)
+                    num.push(e.key);
+                    display.textContent = num.join("");
+                }
+            }
+            break;
+    }
+})
