@@ -80,3 +80,18 @@ button:focus{
 #add{
     grid-row: span 2;
 }
+
+footer{
+    margin-top: 15px;
+    text-align: center;
+    color: #e8e8e8;
+}
+
+a{
+    color: #e8e8e8;
+    text-decoration: none;
+}
+
+a:hover{
+    border-bottom: 3px #5925f5 solid;
+}
