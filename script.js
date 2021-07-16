@@ -71,7 +71,8 @@ const compute = (expression) => {
 
     // limiting the digits of the answer to 10 or 11 (with negative sign)
     if(answer < 0 && answer.toString().length > 11){
-        answer = answer.toExponential(6);
+        alert("Overflow! Use smaller numbers.")
+        answer = 0;
     }
     else if(answer > 0 && answer.toString().length > 10){
         // checking if exponential form is required or the number is improper
@@ -80,7 +81,8 @@ const compute = (expression) => {
             answer = parseFloat(answer.toString().split("").splice(0,10).join(""));
         }
         else{
-            answer = answer.toExponential(5);
+            alert("Overflow! Use smaller numbers.")
+            answer = 0;
         }
     }
     display.textContent = answer || 0;  // to ensure there is always a number on the screen
@@ -127,45 +129,39 @@ keypad.addEventListener("click", e => {
         display.textContent = num.length != 0 ? num.join("") : 0;
     }
     else if(buttonPressed.className.includes("operator")){
-        // can't operate on any numbers that in exponential form (too large)
-        if((num.join("")).includes("e") || memory.toString().includes("e")){
-            alert("Number too large! Can't Operate.");
-        }
-        else{
-            // checking if the sign change button is pressed
-            if(buttonPressed.className.includes("sign-change")){
-                // to ensure it is pressed fore the operator is pressed
-                if(num.length === 0){
-                    alert("Invalid Operation. Use before operator.")
-                }
-                else{
-                    // joins the array into a string, which is then converted into
-                    // into a number so it can be converted to either positive or negative;
-                    // changed back into string array after conversion
-                    num = (-1*parseFloat(num.join(""))).toString().split("");
-                    display.textContent = num.join("");
-                }
+        // checking if the sign change button is pressed
+        if(buttonPressed.className.includes("sign-change")){
+            // to ensure it is pressed fore the operator is pressed
+            if(num.length === 0){
+                alert("Invalid Operation. Use before operator.")
             }
             else{
-                // adding the current input into the expression
-                expression.push(num.length < 1 ? memory : num.join(""));
-                
-                // multiple clicks of the operations button; 
-                // checks the last element in the expression and replaces with the new one
-                if (["+", "-", "x", "÷"].includes(expression[expression.length - 1])){
-                    expression.pop(); // remove the operator at the end of the array; new added later
-                }
-
-                // to ensure the several operations can be used without pressing "="
-                if(expression.length > 2){
-                    answer = compute(expression);
-                    expression = [answer];
-                    memory = 0;
-                }
-                // getting the operator clicked
-                expression.push(buttonPressed.textContent);
-                num = [];
+                // joins the array into a string, which is then converted into
+                // into a number so it can be converted to either positive or negative;
+                // changed back into string array after conversion
+                num = (-1*parseFloat(num.join(""))).toString().split("");
+                display.textContent = num.join("");
             }
+        }
+        else{
+            // adding the current input into the expression
+            expression.push(num.length < 1 ? memory : num.join(""));
+            
+            // multiple clicks of the operations button; 
+            // checks the last element in the expression and replaces with the new one
+            if (["+", "-", "x", "÷"].includes(expression[expression.length - 1])){
+                expression.pop(); // remove the operator at the end of the array; new added later
+            }
+
+            // to ensure the several operations can be used without pressing "="
+            if(expression.length > 2){
+                answer = compute(expression);
+                expression = [answer];
+                memory = 0;
+            }
+            // getting the operator clicked
+            expression.push(buttonPressed.textContent);
+            num = [];
         }
     }
     else if(buttonPressed.className === "equals"){
@@ -176,7 +172,7 @@ keypad.addEventListener("click", e => {
             num = [answer];
             expression = []
             //storing only the previous answer if needed for the next calculation
-            memory = answer; 
+            memory = 0; 
         }
     }
     //console.log(expression, num)
