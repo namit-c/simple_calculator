@@ -128,7 +128,7 @@ keypad.addEventListener("click", e => {
     }
     else if(buttonPressed.className.includes("operator")){
         // can't operate on any numbers that in exponential form (too large)
-        if((num.length < 1 ? memory : num.join("")).includes("e")){
+        if((num.join("")).includes("e") || memory.toString().includes("e")){
             alert("Number too large! Can't Operate.");
         }
         else{
